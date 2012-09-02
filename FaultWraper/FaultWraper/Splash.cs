@@ -41,21 +41,80 @@ namespace FaultWraper
             Lodingtext5.Text = "";
             DirLocation = Path.GetDirectoryName(Application.ExecutablePath);
             updateText("Checking for update.", ref location);
-            Downloadfile("faultversion.txt", "https://dl.dropbox.com/u/66573922/");
+            pushText();
+            if (!versionCurrent())
+            {
+                updateText("Version Not Current! Updateing!", ref location);
+                pushText();
+                updateVersion();
+            }
+            else
+            {
+                updateText("version is Current!", ref location);
+                pushText();
+            }
+            Application.Run(new Faultmain());
+        }
+        /// <summary>
+        /// if the versent issent curent lets update it!
+        /// </summary>
+        private void updateVersion()
+        {
 
         }
         /// <summary>
         /// Checks the versions of curentfault.txt and faultversion.txt if there diffrent, it downloads new version.
         /// </summary>
-        private void checkFileVersions() 
+        private bool versionCurrent()
         {
-            
+            int onlineversion = 0;//faultversion.txt
+            int curentversion = 0;//Fault-Version.txt
+            Downloadfile("faultversion.txt", "https://dl.dropbox.com/u/66573922/");
+            try
+            {
+                using (StreamReader sr = new StreamReader(DirLocation + "Fault-Version.txt"))
+                {
+                    curentversion = versionStringToInt(sr.ReadToEnd());
+                }
+            }
+            catch (Exception e)
+                {
+                    curentversion = 0;
+                }
+            try
+            {
+                using (StreamReader sr = new StreamReader(DirLocation + "faultversion.txt"))
+                {
+                    onlineversion = versionStringToInt(sr.ReadToEnd());
+                }
+            }
+            catch (Exception e)
+            {
+                onlineversion = 0;
+            }
+            if (curentversion < onlineversion)
+                {
+                    return false;
+                }
+            else
+                {
+                    return true;
+                }
+        }
+        /// <summary>
+        /// converts 1.1.1.1 to 1111 for version checking
+        /// </summary>
+        /// <param name="stirng">string of charicters in x.x.x.x format</param>
+        /// <returns></returns>
+        private int versionStringToInt(String stirng)
+        {
+            return (Convert.ToInt32(stirng.Replace(".", "")));
         }
         /// <summary>
         /// Pushes text up lines if new  text is inserted., shouled be called at the end of a thread.
         /// </summary>
         /// <param name="text">the text to be pushed</param>
-        private void pushText(string text)
+        private void pushText()
         {
             switch (location.Name)
             {

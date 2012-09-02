@@ -14,7 +14,7 @@ using System.Windows.Forms;
 using System.IO.Compression;
 using System.IO;
 using System.Net;
-//f
+
 namespace FaultWraper
 {
     public partial class Splash : Form
@@ -23,6 +23,8 @@ namespace FaultWraper
         //https://dl.dropbox.com/u/66573922/Fault.zip
         Label location;
         string DirLocation;
+        string curentfiledownloading = "null";
+        int curentticks = 0;
         /// <summary>
         /// Splash Screen Constructor.
         /// </summary>
@@ -42,6 +44,9 @@ namespace FaultWraper
             DirLocation = Path.GetDirectoryName(Application.ExecutablePath);
             updateText("Checking for update.", ref location);
             pushText();
+        }
+        void main()
+        {
             if (!versionCurrent())
             {
                 updateText("Version Not Current! Updateing!", ref location);
@@ -53,14 +58,17 @@ namespace FaultWraper
                 updateText("version is Current!", ref location);
                 pushText();
             }
-            Application.Run(new Faultmain());
+            updateText("ALLSET Launching game!", ref location);
+            pushText();
+            //Application.Run(new Faultmain());
         }
         /// <summary>
         /// if the versent issent curent lets update it!
         /// </summary>
         private void updateVersion()
         {
-
+            Downloadfile("Fault.zip", "https://dl.dropbox.com/u/66573922/");
+            unzipfile(DirLocation);
         }
         /// <summary>
         /// Checks the versions of curentfault.txt and faultversion.txt if there diffrent, it downloads new version.
@@ -166,7 +174,13 @@ namespace FaultWraper
         /// </summary>
         /// <param name="sender">N/A</param>
         /// <param name="e">N/a</param>
-        private void timer_Tick(object sender, EventArgs e){
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            curentticks++;
+            if (curentticks == 5)
+            {
+                main();
+            }
             blinkCursor(ref location); //must be at end
         }
         /// <summary>
@@ -188,13 +202,17 @@ namespace FaultWraper
         /// Input the location of a zip file and it will unzip the files into the same folder, then delete the zip.
         /// </summary>
         /// <param name="location">Location of the zip file</param>
-        private void unzipfile(string location)
+        private void unzipfile(string flocation)
         {
-            DirectoryInfo directorySelected = new DirectoryInfo(location);
+            DirectoryInfo directorySelected = new DirectoryInfo(flocation);
 
             foreach (FileInfo fileToDecompress in directorySelected.GetFiles("*.zip"))
             {
+                updateText("decompresing file: " + fileToDecompress.Name, ref location);
+                pushText();
                 Decompress(fileToDecompress);
+                updateText("decompressed.", ref location);
+                pushText();
             }
         }
         /// <summary>
@@ -213,7 +231,6 @@ namespace FaultWraper
                     using (DeflateStream decompressionStream = new DeflateStream(originalFileStream, CompressionMode.Decompress))
                     {
                         decompressionStream.CopyTo(decompressedFileStream);
-                        System.Windows.Forms.MessageBox.Show("Decompressed: {0}", fileToDecompress.Name);
                     }
                 }
             }
@@ -239,7 +256,7 @@ namespace FaultWraper
         /// <param name="e"></param>
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            updateText("Downloading File " + e.ProgressPercentage + "%",ref location);
+            updateText("Downloading File " + curentfiledownloading + e.ProgressPercentage + "%", ref location);
         }
         /// <summary>
         /// event called when a download has been compleated.
@@ -249,6 +266,7 @@ namespace FaultWraper
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
             updateText("Download completed!",ref location);
+            pushText();
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.IO.Compression;
 using System.IO;
 using System.Net;
+using System.Diagnostics;
 
 namespace FaultWraper
 {
@@ -25,6 +26,9 @@ namespace FaultWraper
         string DirLocation;
         string curentfiledownloading = "null";
         int curentticks = 0;
+        int curentstep = 0;
+        bool downloading;
+        bool isversioncurent;
         /// <summary>
         /// Splash Screen Constructor.
         /// </summary>
@@ -45,30 +49,57 @@ namespace FaultWraper
             updateText("Checking for update.", ref location);
             pushText();
         }
-        void main()
+        void nextstep()
         {
-            if (!versionCurrent())
+            switch (curentstep)
             {
-                updateText("Version Not Current! Updateing!", ref location);
-                pushText();
-                updateVersion();
+                case 0:
+                    {
+                        Downloadfile("faultversion.txt", "https://dl.dropbox.com/u/66573922/");
+                        break;
+                    }
+                case 1:
+                    {
+                        if (!versionCurrent())
+                        {
+                            updateText("Version Not Current! Updateing!", ref location);
+                            pushText();
+                            updateVersion();
+                        }
+                        else
+                        {
+                            updateText("version is Current!", ref location);
+                            pushText();
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        //unzipfile(DirLocation);
+                        break;
+                    }
+                case 3:
+                    {
+                        updateText("ALLSET Launching game!", ref location);
+                        pushText();
+                        break;
+                    }
+                case 4:
+                    {
+                        Process.Start(DirLocation + "\\Fault.exe");
+                        //Application.Run(new Faultmain());
+                        break;
+                    }
+
             }
-            else
-            {
-                updateText("version is Current!", ref location);
-                pushText();
-            }
-            updateText("ALLSET Launching game!", ref location);
-            pushText();
-            //Application.Run(new Faultmain());
+            curentstep++;
         }
         /// <summary>
         /// if the versent issent curent lets update it!
         /// </summary>
         private void updateVersion()
         {
-            Downloadfile("Fault.zip", "https://dl.dropbox.com/u/66573922/");
-            unzipfile(DirLocation);
+            Downloadfile("Fault.exe", "https://dl.dropbox.com/u/66573922/");
         }
         /// <summary>
         /// Checks the versions of curentfault.txt and faultversion.txt if there diffrent, it downloads new version.
@@ -77,24 +108,19 @@ namespace FaultWraper
         {
             int onlineversion = 0;//faultversion.txt
             int curentversion = 0;//Fault-Version.txt
-            Downloadfile("faultversion.txt", "https://dl.dropbox.com/u/66573922/");
             try
             {
-                using (StreamReader sr = new StreamReader(DirLocation + "Fault-Version.txt"))
-                {
-                    curentversion = versionStringToInt(sr.ReadToEnd());
-                }
+                StreamReader sr = new StreamReader(DirLocation + "\\" + "Fault-Version.txt");
+                curentversion = versionStringToInt(sr.ReadToEnd());
             }
             catch (Exception e)
                 {
-                    curentversion = 0;
+                    curentversion = 0000;
                 }
             try
             {
-                using (StreamReader sr = new StreamReader(DirLocation + "faultversion.txt"))
-                {
-                    onlineversion = versionStringToInt(sr.ReadToEnd());
-                }
+                StreamReader sr = new StreamReader(DirLocation + "\\" + "faultversion.txt");
+                onlineversion = versionStringToInt(sr.ReadToEnd());
             }
             catch (Exception e)
             {
@@ -177,9 +203,9 @@ namespace FaultWraper
         private void timer_Tick(object sender, EventArgs e)
         {
             curentticks++;
-            if (curentticks == 5)
+            if (!downloading)
             {
-                main();
+                nextstep();
             }
             blinkCursor(ref location); //must be at end
         }
@@ -244,10 +270,12 @@ namespace FaultWraper
         /// <param name="fileloc">the location of the file on the remote.</param>
         private void Downloadfile(string filename, string fileloc)
         {
+            downloading = true;
+            curentfiledownloading = filename;
             WebClient webClient = new WebClient();
             webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
             webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-            webClient.DownloadFileAsync(new Uri(fileloc + filename), DirLocation + filename);
+            webClient.DownloadFileAsync(new Uri(fileloc + filename), DirLocation + "\\" + filename);
         }
         /// <summary>
         /// Event called when the status of a download has changed.
@@ -256,7 +284,7 @@ namespace FaultWraper
         /// <param name="e"></param>
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            updateText("Downloading File " + curentfiledownloading + e.ProgressPercentage + "%", ref location);
+            updateText("Downloading File " + curentfiledownloading +" "+ e.ProgressPercentage + "%", ref location);
         }
         /// <summary>
         /// event called when a download has been compleated.
@@ -267,6 +295,7 @@ namespace FaultWraper
         {
             updateText("Download completed!",ref location);
             pushText();
+            downloading = false;
         }
     }
 }

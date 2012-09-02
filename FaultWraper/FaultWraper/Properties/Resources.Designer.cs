@@ -66,5 +66,19 @@ namespace FaultWraper.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap ficon {
+            get {
+                object obj = ResourceManager.GetObject("ficon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ICONwin98 {
+            get {
+                object obj = ResourceManager.GetObject("ICONwin98", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -86,11 +86,12 @@ namespace FaultWraper
                     }
                 case 4:
                     {
-                        Process.Start(DirLocation + "\\Fault.exe");
-                        //Application.Run(new Faultmain());
+                        //Process.Start(DirLocation + "\\Fault.exe");
+                        Faultmain main = new Faultmain();
+                        main.Show();
+                        this.Hide();
                         break;
                     }
-
             }
             curentstep++;
         }

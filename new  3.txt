@@ -1,0 +1,9 @@
+﻿.key needs to be with fault.exe in all lowercase
+plaintext:¤ ALT+0164 PREVENT!~
+.alpha-fault unpack
+https://dl.dropbox.com/u/66573922/faultname.txt
+https://dl.dropbox.com/u/66573922/faultchanges.txt
+ftp: unknown
+blabla.fault
+gamersdev.com
+max key lenght 128

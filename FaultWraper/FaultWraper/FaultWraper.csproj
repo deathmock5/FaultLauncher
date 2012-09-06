@@ -13,20 +13,33 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>ftp://46.4.241.88/fault/</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <InstallUrl>http://gamersdev.co.cc/fault/downloads/</InstallUrl>
+    <UpdateUrl>http://gamersdev.co.cc/fault/downloads/</UpdateUrl>
+    <SupportUrl>http://gamersdev.co.cc/fault/%3fpage_id=17</SupportUrl>
+    <ErrorReportUrl>http://gamersdev.co.cc/fault/%3fpage_id=17</ErrorReportUrl>
+    <ProductName>Fault</ProductName>
+    <PublisherName>GamersDev</PublisherName>
+    <SuiteName>Fault</SuiteName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <DisallowUrlActivation>true</DisallowUrlActivation>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <UseApplicationTrust>true</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -51,6 +64,27 @@
   <PropertyGroup>
     <StartupObject>FaultWraper.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>8AEAAB44CAEE1FA6676B48052BAEB9862F791BF8</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>FaultWraper_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon1.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>FaultWraper_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevComponents.DotNetBar2, Version=10.0.0.3, Culture=neutral, PublicKeyToken=c39c3242a43eee2b, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -65,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EasymodeClases\Baceimg.cs" />
     <Compile Include="Faultmain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,11 +114,17 @@
     <Compile Include="Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
+    <Compile Include="VirusEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VirusEdit.Designer.cs">
+      <DependentUpon>VirusEdit.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Faultmain.resx">
       <DependentUpon>Faultmain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -95,6 +136,12 @@
     <EmbeddedResource Include="Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="VirusEdit.resx">
+      <DependentUpon>VirusEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="DIGISIG.pfx" />
+    <None Include="FaultWraper_TemporaryKey.pfx" />
+    <None Include="GamersDev.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -104,6 +151,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="tempist.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -131,10 +179,55 @@
     <None Include="Resources\faultsplash.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ficon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="DevComponents.DotNetBar2">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ie.gif" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\ICONwin98.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ficon.png" />
+    <None Include="Resources\ICONwin98.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Outlook-Express-Backup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Send-To-Notepad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pdf.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon1.ico" />
+    <EmbeddedResource Include="Resources\corupt.png" />
+    <EmbeddedResource Include="Resources\copy.png" />
+    <EmbeddedResource Include="Resources\move.png" />
+    <None Include="Resources\vir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <FileAssociation Include=".bcv">
+      <Visible>False</Visible>
+      <Description>FaultDataFile</Description>
+      <Progid>Fault.Document</Progid>
+      <DefaultIcon>Icon1.ico</DefaultIcon>
+    </FileAssociation>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

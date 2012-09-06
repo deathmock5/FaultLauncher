@@ -22,7 +22,7 @@ namespace FaultWraper.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace FaultWraper.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FaultWraper.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace FaultWraper.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,23 +60,79 @@ namespace FaultWraper.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap faultsplash {
+        public static System.Drawing.Bitmap copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap corupt {
+            get {
+                object obj = ResourceManager.GetObject("corupt", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap faultsplash {
             get {
                 object obj = ResourceManager.GetObject("faultsplash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ficon {
+        public static System.Drawing.Bitmap ficon {
             get {
                 object obj = ResourceManager.GetObject("ficon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ICONwin98 {
+        public static System.Drawing.Bitmap ICONwin98 {
             get {
                 object obj = ResourceManager.GetObject("ICONwin98", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ie {
+            get {
+                object obj = ResourceManager.GetObject("ie", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap move {
+            get {
+                object obj = ResourceManager.GetObject("move", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap Outlook_Express_Backup {
+            get {
+                object obj = ResourceManager.GetObject("Outlook_Express_Backup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap pdf {
+            get {
+                object obj = ResourceManager.GetObject("pdf", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap Send_To_Notepad {
+            get {
+                object obj = ResourceManager.GetObject("Send_To_Notepad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap vir {
+            get {
+                object obj = ResourceManager.GetObject("vir", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -24,11 +24,13 @@ namespace FaultWraper
         //https://dl.dropbox.com/u/66573922/Fault.zip
         Label location;
         string DirLocation;
+        string dropboxlink = "https://dl.dropbox.com/u/66573922/";
         string curentfiledownloading = "null";
+        string faultname = null;
         int curentticks = 0;
         int curentstep = 0;
         bool downloading;
-        bool isversioncurent;
+        bool justupdated = false;
         /// <summary>
         /// Splash Screen Constructor.
         /// </summary>
@@ -49,13 +51,17 @@ namespace FaultWraper
             updateText("Checking for update.", ref location);
             pushText();
         }
+        /// <summary>
+        /// called to take the next step
+        /// </summary>
         void nextstep()
         {
             switch (curentstep)
             {
                 case 0:
                     {
-                        Downloadfile("faultversion.txt", "https://dl.dropbox.com/u/66573922/");
+                        Downloadfile("faultversion.txt", dropboxlink);
+                        Downloadfile("faultname.txt", dropboxlink);
                         break;
                     }
                 case 1:
@@ -75,16 +81,38 @@ namespace FaultWraper
                     }
                 case 2:
                     {
-                        //unzipfile(DirLocation);
+                        if (File.Exists(DirLocation + "\\.key"))
+                        {
+                            updateText("keyfile found.", ref location);
+                            pushText();
+                        }
+                        else
+                        {
+                            updateText("Keyfile not found,", ref location);
+                            pushText();
+                        };
                         break;
                     }
                 case 3:
                     {
-                        updateText("ALLSET Launching game!", ref location);
-                        pushText();
+                        if (justupdated)
+                        {
+                            updateText("unpacking fault", ref location);
+                            File.Copy(faultname, "Fault.exe");
+                            File.Delete(faultname);
+                            pushText();
+                            Process.Start(DirLocation + "\\Fault.exe", "unpack");
+                        }
                         break;
                     }
                 case 4:
+                    {
+                        updateText("ALLSET Launching game!", ref location);
+                        pushText();
+                        File.Delete(DirLocation + "\\faultname.txt");
+                        break;
+                    }
+                case 5:
                     {
                         //Process.Start(DirLocation + "\\Fault.exe");
                         Faultmain main = new Faultmain();
@@ -100,7 +128,11 @@ namespace FaultWraper
         /// </summary>
         private void updateVersion()
         {
-            Downloadfile("Fault.exe", "https://dl.dropbox.com/u/66573922/");
+            File.Delete(DirLocation + "//" + "Fault.exe");
+            Downloadfile(faultname, "https://dl.dropbox.com/u/66573922/");
+            File.Delete(DirLocation + "//" + "Fault-Version.txt");
+            File.Delete(DirLocation + "//" + "Fault-Readme.txt");
+            justupdated = true;
         }
         /// <summary>
         /// Checks the versions of curentfault.txt and faultversion.txt if there diffrent, it downloads new version.
@@ -113,6 +145,7 @@ namespace FaultWraper
             {
                 StreamReader sr = new StreamReader(DirLocation + "\\" + "Fault-Version.txt");
                 curentversion = versionStringToInt(sr.ReadToEnd());
+                sr.Close();
             }
             catch (Exception e)
                 {
@@ -122,6 +155,7 @@ namespace FaultWraper
             {
                 StreamReader sr = new StreamReader(DirLocation + "\\" + "faultversion.txt");
                 onlineversion = versionStringToInt(sr.ReadToEnd());
+                sr.Close();
             }
             catch (Exception e)
             {
@@ -129,6 +163,9 @@ namespace FaultWraper
             }
             if (curentversion < onlineversion)
                 {
+                StreamReader sr = new StreamReader(DirLocation + "\\" + "faultname.txt");
+                    faultname = sr.ReadToEnd();
+                    sr.Close();
                     return false;
                 }
             else

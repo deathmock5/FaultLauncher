@@ -5,8 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data;
 using System.Drawing;
-//
-//
+
 namespace FaultWraper.EasymodeClases
 {
     class Baceimg

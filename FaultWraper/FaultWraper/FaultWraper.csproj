@@ -216,8 +216,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon1.ico" />
-    <EmbeddedResource Include="Resources\corupt.png" />
-    <EmbeddedResource Include="Resources\copy.png" />
+    <None Include="Resources\shift.png" />
+    <None Include="Resources\mov.png" />
+    <None Include="Resources\corupt.png" />
+    <None Include="Resources\copy.png" />
     <EmbeddedResource Include="Resources\move.png" />
     <None Include="Resources\vir.png" />
   </ItemGroup>

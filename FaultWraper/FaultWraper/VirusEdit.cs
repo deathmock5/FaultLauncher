@@ -27,9 +27,21 @@ namespace FaultWraper
             tabbottom.SelectedTab = hardtab;
             ribbonControl1.SelectedRibbonTabItem = ribbonHardcore;
             _assembly = Assembly.GetExecutingAssembly();
-            
+            hardtxtbox.TextChanged += new EventHandler(changedtext);
         }
-
+        /// <summary>
+        /// called when the text in the textbox is changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void changedtext(object sender, EventArgs e)
+        {
+        }
+        /// <summary>
+        /// returns a bitmap from an string.
+        /// </summary>
+        /// <param name="name">the string to the file local to the programs directory</param>
+        /// <returns></returns>
         public Bitmap getImageFromResourcess(string name)
         {
             Stream _imageStream = null;
@@ -46,22 +58,28 @@ namespace FaultWraper
             returnimg.MakeTransparent();
             return returnimg;
         }
-        
+        /// <summary>
+        /// check teh spelling
+        /// </summary>
         private void spellcheck()
         {
 
         }
+        /// <summary>
+        /// checks each line at loadtime
+        /// </summary>
+        /// <param name="line">the line of code</param>
         private void parseline(string line)
         {
             if (line.Contains("#NAME"))
             {
                 line = line.Replace("#NAME ", "");
-                ribbonHardcore_virname.Text = line;
+                ribbon_virname.Text = line;
             }
             else if (line.Contains("#AUTHOR "))
             {
                 line = line.Replace("#AUTHOR ", "");
-                ribbonHardcore_virauth.Text = line;
+                ribbon_virauth.Text = line;
             }
             else
             {
@@ -71,9 +89,39 @@ namespace FaultWraper
                 }
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
         private void holdicon()
         {
 
+        }
+        /// <summary>
+        /// instantate the object with the specified name
+        /// </summary>
+        /// <param name="name">the name fo the control you want.</param>
+        private void instantateobject(string name)
+        {
+            Baceimg mybace = new Baceimg(10, 10);
+            bool wassucsessfull = true;
+            try
+            {
+                mybace.setpos(ref easydev);
+                mybace.set_name(name);
+                mybace.bgimage_set(getImageFromResourcess(name + ".png"));
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debugger.Log(0, "1", "File '" + name + "' not found");
+
+            }
+            finally
+            {
+                if (wassucsessfull)
+                {
+                    easypannels.Add(mybace);
+                }
+            }
         }
         #region "Buttons"
         //hardmenu
@@ -104,8 +152,8 @@ namespace FaultWraper
                     if ((myStream = opendia.OpenFile()) != null)
                     {
                         //erase the prev boxes.
-                        ribbonHardcore_virauth.Text = "";
-                        ribbonHardcore_virname.Text = "";
+                        ribbon_virauth.Text = "";
+                        ribbon_virname.Text = "";
                         hardtxtbox.Text = "";
                         //read the file
                         String[] lines = File.ReadAllLines((opendia.FileName));
@@ -129,8 +177,8 @@ namespace FaultWraper
             if (curentfile != "")
             {
                 System.IO.StreamWriter fs = new System.IO.StreamWriter(curentfile);
-                fs.WriteLine("#NAME " + ribbonHardcore_virname.Text);
-                fs.WriteLine("#AUTHOR " + ribbonHardcore_virauth.Text);
+                fs.WriteLine("#NAME " + ribbon_virname.Text);
+                fs.WriteLine("#AUTHOR " + ribbon_virauth.Text);
                 foreach (string line in hardtxtbox.Lines)
                 {
                     fs.WriteLine(line);
@@ -149,8 +197,8 @@ namespace FaultWraper
                 if (saveFileDialog1.FileName != "")
                 {
                     System.IO.StreamWriter fs = new System.IO.StreamWriter(saveFileDialog1.FileName);
-                    fs.WriteLine("#NAME " + ribbonHardcore_virname.Text);
-                    fs.WriteLine("#AUTHOR " + ribbonHardcore_virauth.Text);
+                    fs.WriteLine("#NAME " + ribbon_virname.Text);
+                    fs.WriteLine("#AUTHOR " + ribbon_virauth.Text);
                     foreach (string line in hardtxtbox.Lines)
                     {
                         fs.WriteLine(line);
@@ -173,14 +221,6 @@ namespace FaultWraper
 
         }
         //easymenu
-        private void instantateobject(string name)
-        {
-            Baceimg mybace = new Baceimg(10, 10);
-            mybace.setpos(ref easydev);
-            mybace.set_name(name);
-            mybace.bgimage_set(getImageFromResourcess(name + ".png"));
-            easypannels.Add(mybace);
-        }
         private void Movebutton_Click(object sender, EventArgs e)
         {
             instantateobject("move");
@@ -198,12 +238,5 @@ namespace FaultWraper
             instantateobject("shift");
         }
         #endregion
-
-        private void reflectionImage1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        
     }
 }

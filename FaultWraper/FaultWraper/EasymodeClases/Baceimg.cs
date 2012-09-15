@@ -14,12 +14,19 @@ namespace FaultWraper.EasymodeClases
         private TextBox textBox1;
         private Label label1;
         private Point start;
+        public Point mypos;
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="xPos">the x position of the control</param>
+        /// <param name="yPos">the y position of the control</param>
         public Baceimg(int xPos, int yPos)
         {
             bacepannel = new Panel();
             textBox1 = new TextBox();
             label1 = new Label();
             bacepannel.Location = new Point(xPos, yPos);
+            mypos = new Point(xPos, yPos);
             bacepannel.Size = new Size(100, 50);
             bacepannel.BackColor = Color.Transparent;
             bacepannel.BorderStyle = BorderStyle.None;
@@ -40,16 +47,28 @@ namespace FaultWraper.EasymodeClases
             bacepannel.MouseDown += new MouseEventHandler(baceimg_MouseDown);
             label1.MouseDown += new MouseEventHandler(label1_MouseDown);
         }
+        /// <summary>
+        /// set the positon of the control
+        /// </summary>
+        /// <param name="item">the pannel</param>
         public void setpos(ref Panel item)
         {
             item.Controls.Add(bacepannel);
         }
+        /// <summary>
+        /// set the name of the box
+        /// </summary>
+        /// <param name="name">the name</param>
         public void set_name(string name)
         {
             label1.Text = name;
         }
+        /// <summary>
+        /// set the background image
+        /// </summary>
+        /// <param name="img">the background image</param>
         public void bgimage_set(Image img)
-        {
+        { 
             
             bacepannel.BackgroundImage = img;
             bacepannel.BackgroundImageLayout = ImageLayout.Stretch;
@@ -63,7 +82,7 @@ namespace FaultWraper.EasymodeClases
         {
 
         }
-        //
+
         /// <summary>
         /// setMouseDown events
         /// </summary>
@@ -100,6 +119,7 @@ namespace FaultWraper.EasymodeClases
         void baceimg_MouseMove(object sender, MouseEventArgs e)
         {
             bacepannel.Location = new Point(bacepannel.Location.X - (start.X - e.X), bacepannel.Location.Y - (start.Y - e.Y));
+            mypos = bacepannel.Location;
         }
         void label1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -119,6 +139,7 @@ namespace FaultWraper.EasymodeClases
             else
             {
                 bacepannel.Location = new Point(bacepannel.Location.X - (start.X - e.X), bacepannel.Location.Y - (start.Y - e.Y));
+                mypos = bacepannel.Location;
             }
         }
     }

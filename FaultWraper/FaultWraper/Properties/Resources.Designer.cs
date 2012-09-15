@@ -130,6 +130,13 @@ namespace FaultWraper.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap shift {
+            get {
+                object obj = ResourceManager.GetObject("shift", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap vir {
             get {
                 object obj = ResourceManager.GetObject("vir", resourceCulture);

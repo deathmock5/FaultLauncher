@@ -14,7 +14,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>ftp://46.4.241.88/fault/</PublishUrl>
+    <PublishUrl>ftp://tempestgamers.com/fault-ftp/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -24,18 +24,19 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://gamersdev.co.cc/fault/downloads/</InstallUrl>
-    <UpdateUrl>http://gamersdev.co.cc/fault/downloads/</UpdateUrl>
-    <SupportUrl>http://gamersdev.co.cc/fault/%3fpage_id=17</SupportUrl>
-    <ErrorReportUrl>http://gamersdev.co.cc/fault/%3fpage_id=17</ErrorReportUrl>
+    <InstallUrl>http://tempestgamers.com/fault-ftp/</InstallUrl>
+    <UpdateUrl>http://tempestgamers.com/fault-ftp/</UpdateUrl>
+    <SupportUrl>http://tempestgamers.com/forum</SupportUrl>
+    <ErrorReportUrl>http://tempestgamers.com/forum</ErrorReportUrl>
+    <TargetCulture>en</TargetCulture>
     <ProductName>Fault</ProductName>
-    <PublisherName>GamersDev</PublisherName>
+    <PublisherName>Tempest Gamers</PublisherName>
     <SuiteName>Fault</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <DisallowUrlActivation>true</DisallowUrlActivation>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>19</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -65,28 +66,37 @@
     <StartupObject>FaultWraper.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>8AEAAB44CAEE1FA6676B48052BAEB9862F791BF8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>AE343EC879847BDD2D2D1596248EA96C74AEB453</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FaultWraper_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon1.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>FaultWraper_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="DevComponents.DotNetBar2, Version=10.0.0.3, Culture=neutral, PublicKeyToken=c39c3242a43eee2b, processorArchitecture=MSIL" />
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\..\..\Downloads\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -100,6 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EasymodeClases\Baceimg.cs" />
+    <Compile Include="EasymodeClases\DoubleBufferPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Faultmain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,9 +152,7 @@
     <EmbeddedResource Include="VirusEdit.resx">
       <DependentUpon>VirusEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="DIGISIG.pfx" />
-    <None Include="FaultWraper_TemporaryKey.pfx" />
-    <None Include="GamersDev.pfx" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -151,12 +162,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="tempist.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -169,9 +179,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
       <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
+      <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -200,9 +210,6 @@
     <None Include="Resources\ie.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ICONwin98.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ICONwin98.png" />
   </ItemGroup>
   <ItemGroup>
@@ -216,10 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon1.ico" />
-    <None Include="Resources\shift.png" />
-    <None Include="Resources\mov.png" />
-    <None Include="Resources\corupt.png" />
-    <None Include="Resources\copy.png" />
+    <EmbeddedResource Include="Resources\shift.png" />
+    <EmbeddedResource Include="Resources\corupt.png" />
+    <EmbeddedResource Include="Resources\copy.png" />
     <EmbeddedResource Include="Resources\move.png" />
     <None Include="Resources\vir.png" />
   </ItemGroup>

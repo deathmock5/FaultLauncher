@@ -14,6 +14,7 @@ namespace FaultWraper
 {
     public partial class VirusEdit : DevComponents.DotNetBar.Office2007RibbonForm
     {
+        PictureBox mypic = new PictureBox();
         List<Baceimg> easypannels = new List<Baceimg>();
         Assembly _assembly;
         string DirLocation = Path.GetDirectoryName(Application.ExecutablePath);
@@ -28,6 +29,16 @@ namespace FaultWraper
             ribbonControl1.SelectedRibbonTabItem = ribbonHardcore;
             _assembly = Assembly.GetExecutingAssembly();
             hardtxtbox.TextChanged += new EventHandler(changedtext);
+            EnableDoubleBuffering();
+        }
+        public void EnableDoubleBuffering()
+        {
+            // Set the value of the double-buffering style bits to true. 
+            this.SetStyle(ControlStyles.DoubleBuffer |
+               ControlStyles.UserPaint |
+               ControlStyles.AllPaintingInWmPaint,
+               true);
+            this.UpdateStyles();
         }
         /// <summary>
         /// called when the text in the textbox is changed
@@ -84,9 +95,9 @@ namespace FaultWraper
             else
             {
                 hardtxtbox.AppendText(line + "\n");
-                switch (line)
-                {
-                }
+                //switch (line)
+                //{
+                //}
             }
         }
         /// <summary>
@@ -103,15 +114,24 @@ namespace FaultWraper
         private void instantateobject(string name)
         {
             Baceimg mybace = new Baceimg(10, 10);
+            if (easypannels.Count == 0)
+            {
+                mybace = new Baceimg(10, 10);
+            }
+            else
+            {
+                mybace = new Baceimg(10, (easypannels.Count * easypannels[0].getSize().Height) + 10); 
+            }
             bool wassucsessfull = true;
             try
             {
-                mybace.setpos(ref easydev);
+                mybace.putInContainer(ref easydev);
                 mybace.set_name(name);
                 mybace.bgimage_set(getImageFromResourcess(name + ".png"));
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                wassucsessfull = false;
                 System.Diagnostics.Debugger.Log(0, "1", "File '" + name + "' not found");
 
             }
@@ -119,6 +139,8 @@ namespace FaultWraper
             {
                 if (wassucsessfull)
                 {
+                    mybace.giveRef(ref easypannels);
+                    mybace.setID(easypannels.Count);
                     easypannels.Add(mybace);
                 }
             }
@@ -238,5 +260,17 @@ namespace FaultWraper
             instantateobject("shift");
         }
         #endregion
+
+        private void buttonItem2_Click(object sender, EventArgs e)
+        {
+            mypic.Image = getImageFromResourcess("copy.png");
+            mypic.Location = new Point(10, 10);
+            mypic.MouseMove += new MouseEventHandler(bla);
+            easydev.Controls.Add(mypic);
+        }
+        private void bla(object sender, MouseEventArgs e)
+        {
+            mypic.Location = new Point(e.X + mypic.Location.X, e.Y + mypic.Location.Y);
+        }
     }
 }

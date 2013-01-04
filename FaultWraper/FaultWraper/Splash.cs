@@ -15,7 +15,7 @@ using System.IO.Compression;
 using System.IO;
 using System.Net;
 using System.Diagnostics;
-
+using Ionic.Zip;
 namespace FaultWraper
 {
     public partial class Splash : Form
@@ -24,9 +24,11 @@ namespace FaultWraper
         //https://dl.dropbox.com/u/66573922/Fault.zip
         Label location;
         string DirLocation;
-        string dropboxlink = "https://dl.dropbox.com/u/66573922/";
+        string dlLink = "http://tempestgamers.com/fault-ftp/current/";
+        string latestBuild = null;
         string curentfiledownloading = "null";
         string faultname = null;
+        string versionString = "0.0.0.0";
         int curentticks = 0;
         int curentstep = 0;
         bool downloading;
@@ -50,6 +52,7 @@ namespace FaultWraper
             DirLocation = Path.GetDirectoryName(Application.ExecutablePath);
             updateText("Checking for update.", ref location);
             pushText();
+            
         }
         /// <summary>
         /// called to take the next step
@@ -60,8 +63,8 @@ namespace FaultWraper
             {
                 case 0:
                     {
-                        Downloadfile("faultversion.txt", dropboxlink);
-                        Downloadfile("faultname.txt", dropboxlink);
+                        //Downloadfile("faultversion.txt", dropboxlink);
+                        //Downloadfile("faultname.txt", dropboxlink);
                         break;
                     }
                 case 1:
@@ -98,8 +101,8 @@ namespace FaultWraper
                         if (justupdated)
                         {
                             updateText("unpacking fault", ref location);
-                            File.Copy(faultname, "Fault.exe");
-                            File.Delete(faultname);
+                            File.Delete(DirLocation + "Fault.exe");
+                            unzipfile(DirLocation + "\\" + getFileNameFromURL(latestBuild),DirLocation);
                             pushText();
                             Process.Start(DirLocation + "\\Fault.exe", "unpack");
                         }
@@ -129,9 +132,9 @@ namespace FaultWraper
         private void updateVersion()
         {
             File.Delete(DirLocation + "//" + "Fault.exe");
-            Downloadfile(faultname, "https://dl.dropbox.com/u/66573922/");
             File.Delete(DirLocation + "//" + "Fault-Version.txt");
             File.Delete(DirLocation + "//" + "Fault-Readme.txt");
+            Downloadfile(dlLink);
             justupdated = true;
         }
         /// <summary>
@@ -139,39 +142,42 @@ namespace FaultWraper
         /// </summary>
         private bool versionCurrent()
         {
-            int onlineversion = 0;//faultversion.txt
-            int curentversion = 0;//Fault-Version.txt
             try
             {
-                StreamReader sr = new StreamReader(DirLocation + "\\" + "Fault-Version.txt");
-                curentversion = versionStringToInt(sr.ReadToEnd());
-                sr.Close();
-            }
-            catch (Exception e)
+                try
                 {
-                    curentversion = 0000;
-                }
-            try
-            {
-                StreamReader sr = new StreamReader(DirLocation + "\\" + "faultversion.txt");
-                onlineversion = versionStringToInt(sr.ReadToEnd());
-                sr.Close();
-            }
-            catch (Exception e)
-            {
-                onlineversion = 0;
-            }
-            if (curentversion < onlineversion)
-                {
-                StreamReader sr = new StreamReader(DirLocation + "\\" + "faultname.txt");
-                    faultname = sr.ReadToEnd();
+                    StreamReader sr = new StreamReader(DirLocation + "\\" + "Fault-Version.txt");
+                    versionString = sr.ReadToEnd();
                     sr.Close();
-                    return false;
                 }
-            else
+                catch (Exception)
                 {
-                    return true;
+                    versionString = "0.0.0.0";
                 }
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead("http://tempestgamers.com/fault-ftp/versionCurrent.php?pid=1&myVers=" + versionString);
+                StreamReader reader = new StreamReader(stream);
+                String content = reader.ReadToEnd();
+                Debugger.Log(0, null, "Myversion:" + versionString + "\n");
+                switch (content)
+                {
+                    case "0":
+                        Debugger.Log(0, null, "Product id was not found" + "\n");
+                        return true;
+                    case "1":
+                        Debugger.Log(0, null, "Version is current" + "\n");
+                        return true;
+                    default:
+                        latestBuild = content;
+                        Debugger.Log(0, null,"New version found:" + content + "\n");
+                        return false;
+                }
+            }
+            catch (System.Net.WebException)
+            {
+                Debugger.Log(0, null, "Internet Unavailiable" + "\n");
+                return true;
+            }
         }
         /// <summary>
         /// converts 1.1.1.1 to 1111 for version checking
@@ -266,38 +272,35 @@ namespace FaultWraper
         /// Input the location of a zip file and it will unzip the files into the same folder, then delete the zip.
         /// </summary>
         /// <param name="location">Location of the zip file</param>
-        private void unzipfile(string flocation)
+        private void unzipfile(string zipToUnpack, string unpackDirectory)
         {
-            DirectoryInfo directorySelected = new DirectoryInfo(flocation);
-
-            foreach (FileInfo fileToDecompress in directorySelected.GetFiles("*.zip"))
+            using (ZipFile zip1 = ZipFile.Read(zipToUnpack))
             {
-                updateText("decompresing file: " + fileToDecompress.Name, ref location);
-                pushText();
-                Decompress(fileToDecompress);
-                updateText("decompressed.", ref location);
-                pushText();
-            }
-        }
-        /// <summary>
-        /// Decompresses a specified file, is only called from the unzipfile method.
-        /// </summary>
-        /// <param name="fileToDecompress"></param>
-        private static void Decompress(FileInfo fileToDecompress)
-        {
-            using (FileStream originalFileStream = fileToDecompress.OpenRead())
-            {
-                string currentFileName = fileToDecompress.FullName;
-                string newFileName = currentFileName.Remove(currentFileName.Length - fileToDecompress.Extension.Length);
-
-                using (FileStream decompressedFileStream = File.Create(newFileName))
+                // here, we extract every entry, but we could extract conditionally
+                // based on entry name, size, date, checkbox status, etc.  
+                foreach (ZipEntry e in zip1)
                 {
-                    using (DeflateStream decompressionStream = new DeflateStream(originalFileStream, CompressionMode.Decompress))
-                    {
-                        decompressionStream.CopyTo(decompressedFileStream);
-                    }
+                    updateText("decompresing file: " + e.FileName, ref location);
+                    pushText();
+                    e.Extract(unpackDirectory, ExtractExistingFileAction.OverwriteSilently);
+                    updateText("decompressed.", ref location);
+                    pushText();
                 }
             }
+        }
+        private string getFileNameFromURL(string url)
+        {
+            return url.Substring(url.LastIndexOf("/") + 1);
+        }
+        private void Downloadfile(string fileloc)
+        {
+            downloading = true;
+            string filename = getFileNameFromURL(latestBuild);
+            curentfiledownloading = filename;
+            WebClient webClient = new WebClient();
+            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+            webClient.DownloadFileAsync(new Uri(latestBuild), DirLocation + "\\" + filename);
         }
         /// <summary>
         /// Downloads a spesified file, only ment to download the zip/txt file in xeos dropbox.
